@@ -1,12 +1,30 @@
-from rest_framework import viewsets
+from rest_framework import views
 
 from . import models as product_models
 from . import serializers as product_serializers
 
 
-class ProductViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows products to be viewed or edited.
-    """
-    queryset = product_models.Product.objects.all()
-    serializer_class = product_serializers.ProductSerializer
+class ProductView(views.APIView):
+    def get(self, request):
+        """
+        Return All Products
+        """
+        pass
+
+    def post(self, request):
+        """
+        Add new products with units
+        """
+        pass
+
+    def put(self, request):
+        """
+        Update product with units
+        """
+        pass
+
+    def delete(self, request):
+        """
+        Delete product
+        """
+        pass
