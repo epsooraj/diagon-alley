@@ -1,0 +1,1 @@
+python3 manage.py graph_models -a -I CustomUser,Product,Unit,Category -o viz.png
