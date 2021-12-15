@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
+
     'rest_framework',
 
     'user.apps.UserConfig',
@@ -62,6 +64,11 @@ ROOT_URLCONF = 'ecomm.urls'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
+}
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
 }
 
 
