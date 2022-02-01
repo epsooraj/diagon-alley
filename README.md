@@ -1,4 +1,4 @@
-# ecommerec
+# The Leaky Cauldron
 
 Django E-Commerce Server Base
 
