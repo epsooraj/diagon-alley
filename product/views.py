@@ -1,21 +1,86 @@
-from rest_framework import views
+from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.response import Response
 
 from . import models as product_models
 from . import serializers as product_serializers
+from category import models as category_models
 
 
-class ProductView(views.APIView):
-    def get(self, request):
+class ProductViewSet(viewsets.ModelViewSet):
+
+    queryset = product_models.Product.objects.all()
+    serializer_class = product_serializers.ProductSerializer
+
+    def check_and_set_fields(self, request):
         """
-        Return All Products
+        Check if all required fields are present
         """
-        pass
+        error = False
+        msg = {}
 
-    def post(self, request):
+        data = {}
+
+        name = request.data.get('name')
+        name_2 = request.data.get('name_2')
+        description = request.data.get('description', "")
+        category = request.data.get('category')
+        sub_category = request.data.get('sub_category')
+        units = request.data.get('units')
+
+        # Check if all required fields are present
+        if not name:
+            error = True
+            msg['name'] = ['Name field is required']
+        if not category:
+            error = True
+            msg['category'] = ['Category field is required']
+        else:
+            category_obj = category_models.Category.objects.get(id=category)
+
+        if not sub_category:
+            error = True
+            msg['sub_category'] = ['Sub Category field is required']
+        else:
+            sub_category_obj = category_models.Category.objects.get(
+                id=sub_category)
+        if not units:
+            error = True
+            msg['units'] = ['Units field is required']
+
+        data = {
+            'name': name,
+            'name_2': name_2,
+            'description': description,
+            'category': category_obj,
+            'sub_category': sub_category_obj,
+            'units': units
+        }
+
+        return error, msg, data
+
+    def create(self, request, *args, **kwargs):
         """
         Add new products with units
+        params: name, name_2, units, description, category, sub_category
+                units: [{unit, value, price, discount_percentage, stock}]
         """
-        pass
+
+        error, msg, data = self.check_and_set_fields(request)
+
+        if error:
+            return Response({'error': msg}, status=status.HTTP_400_BAD_REQUEST)
+
+        product_obj = product_models.Product.objects.create(
+            name=data['name'], name_2=data['name_2'], description=data['description'], category=data['category'], sub_category=data['sub_category'])
+
+        for unit in data['units']:
+            unit_obj = product_models.Unit.objects.create(
+                product=product_obj, **unit)
+
+        serializer = product_serializers.ProductSerializer(product_obj)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def put(self, request):
         """
