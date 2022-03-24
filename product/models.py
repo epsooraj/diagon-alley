@@ -54,3 +54,22 @@ class Unit(models.Model):
         verbose_name = 'Unit'
         verbose_name_plural = 'Units'
         ordering = ('value',)
+
+
+class UnitImage(models.Model):
+    unit = models.ForeignKey(
+        to=Unit, on_delete=models.CASCADE, related_name="unit_images")
+
+    image = models.ImageField(upload_to='product/unit_images/')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.unit)
+
+    class Meta:
+        db_table = 'unit_images'
+        verbose_name = 'Unit Image'
+        verbose_name_plural = 'Unit Images'
+        ordering = ('unit',)

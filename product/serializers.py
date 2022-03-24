@@ -4,7 +4,15 @@ from . import models as product_models
 from category import serializers as category_serializers
 
 
+class ProductUnitImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = product_models.UnitImage
+        fields = '__all__'
+
+
 class ProductUnitSerializer(serializers.ModelSerializer):
+    unit_images = ProductUnitImageSerializer(many=True)
+
     class Meta:
         model = product_models.Unit
         fields = '__all__'
