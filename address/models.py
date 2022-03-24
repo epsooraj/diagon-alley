@@ -8,9 +8,15 @@ class PostalCode(models.Model):
     PostalCode model
     """
     postal_code = models.CharField(max_length=10)
+    location = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return str(self.postal_code)
+
+    class Meta:
+        db_table = 'postal_code'
+        verbose_name = 'Postal Code'
+        verbose_name_plural = 'Postal Codes'
 
 
 class Address(models.Model):
@@ -38,3 +44,8 @@ class Address(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        db_table = 'address'
+        verbose_name = 'Address'
+        verbose_name_plural = 'Addresses'
