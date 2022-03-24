@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework import permissions
 
 from . import models as product_models
 from . import serializers as product_serializers
@@ -8,6 +9,8 @@ from category import models as category_models
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+
+    permission_classes = [permissions.AllowAny]
 
     queryset = product_models.Product.objects.all()
     serializer_class = product_serializers.ProductSerializer
