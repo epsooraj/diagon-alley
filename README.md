@@ -11,7 +11,7 @@ It is embeded with Units in with the concept as all products will have units. Th
 
 Product app has a database table named 'products' with the following columns:
 
-**Product**
+#### Product
 
 | Column | Type | Description |
 | ------ | ------ | ----------- |
@@ -24,7 +24,7 @@ Product app has a database table named 'products' with the following columns:
 | created_at | datetime | Date and Time in which the product is created |
 | update_at | datetime | Date and Time of the last update |
 
-**Unit**
+#### Unit
 | Column | Type | Description |
 | ------ | ------ | ----------- |
 | id | integer | Unique identifier for the unit |
@@ -35,3 +35,12 @@ Product app has a database table named 'products' with the following columns:
 | discount_percentage | float | Discount Percentage of the product to corresponding unit |
 | created_at | datetime | Date and Time in which the unit is created |
 | update_at | datetime | Date and Time of the last update |
+
+### Todo
+
+- [x] User
+- [x] Category
+- [x] Product
+- [x] Cart
+- [ ] Order
+- [ ] Report
