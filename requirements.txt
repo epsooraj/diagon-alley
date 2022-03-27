@@ -5,3 +5,4 @@ Pillow==8.4.0
 django-extensions==3.1.5
 pygraphviz==1.7
 pydot==1.4.2
+ipython[notebook]
