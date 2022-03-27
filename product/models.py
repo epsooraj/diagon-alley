@@ -11,9 +11,9 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     category = models.ForeignKey(
-        to=category_models.Category, on_delete=models.CASCADE, related_name="category")
+        to=category_models.Category, on_delete=models.SET_NULL, related_name="category", null=True)
     sub_category = models.ForeignKey(
-        to=category_models.Category, on_delete=models.CASCADE, related_name="sub_category")
+        to=category_models.Category, on_delete=models.SET_NULL, related_name="sub_category", null=True)
 
     def __str__(self):
         return str(self.name)
