@@ -1,1 +1,0 @@
-./django-run.sh runserver
