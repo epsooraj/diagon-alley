@@ -1,4 +1,4 @@
-# The Leaky Cauldron
+# The Diagon Alley
 
 Django E-Commerce Server Base
 
