@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from category import models as category_models
 from product import models as product_models
@@ -49,7 +51,8 @@ class OrderUser(models.Model):
 
 
 class Order(models.Model):
-    order_id = models.CharField(verbose_name="Order Id", max_length=255)
+    order_id = models.CharField(
+        verbose_name="Order Id", max_length=255, default="", db_index=True, unique=True)
 
     user = models.ForeignKey(OrderUser, on_delete=models.CASCADE)
 
@@ -60,6 +63,8 @@ class Order(models.Model):
         verbose_name="Created At", auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(verbose_name="Updated At", auto_now=True)
 
+    placed = models.BooleanField(verbose_name="Placed", default=False)
+
     def __str__(self):
         return self.order_id
 
@@ -69,13 +74,23 @@ class Order(models.Model):
         verbose_name_plural = 'Orders'
 
 
+@receiver(post_save, sender=Order)
+def order_post_save_receiver(sender, instance, **kwargs):
+    # Generate order_id
+    if instance.order_id == "":
+        instance.order_id = settings.ORDER_ID_PREFIX + \
+            ("00" if instance.id < 10 else "0" if instance.id <
+             100 else "") + str(instance.id)
+        instance.save()
+
+
 class OrderProduct(models.Model):
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="order_products")
+        Order, on_delete=models.CASCADE, related_name="products")
     quantity = models.IntegerField(verbose_name="Quantity")
 
     product = models.ForeignKey(
-        product_models.Product, on_delete=models.CASCADE, related_name="order_products")
+        product_models.Product, on_delete=models.SET_NULL, related_name="order_products", null=True)
 
     name = models.CharField(max_length=255)
     name_2 = models.CharField(max_length=255, null=True, blank=True)
@@ -96,3 +111,48 @@ class OrderProduct(models.Model):
         db_table = 'order_product'
         verbose_name = 'Order Product'
         verbose_name_plural = 'Order Products'
+
+
+class OrderUnit(models.Model):
+    product = models.ForeignKey(
+        to=OrderProduct, on_delete=models.CASCADE, related_name="units")
+
+    product_unit = models.ForeignKey(
+        to=product_models.Unit, on_delete=models.SET_NULL, related_name="order_units", null=True)
+
+    unit = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
+
+    price = models.FloatField()
+    discount_percentage = models.FloatField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.value) + " " + str(self.unit)
+
+    class Meta:
+        db_table = 'order_unit'
+        verbose_name = 'Unit'
+        verbose_name_plural = 'Units'
+        ordering = ('value',)
+
+
+class OrderUnitImage(models.Model):
+    unit = models.ForeignKey(
+        to=OrderUnit, on_delete=models.CASCADE, related_name="unit_images")
+
+    image = models.ImageField(upload_to='product/unit_images/')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.unit)
+
+    class Meta:
+        db_table = 'order_unit_image'
+        verbose_name = 'Unit Image'
+        verbose_name_plural = 'Unit Images'
+        ordering = ('unit',)
