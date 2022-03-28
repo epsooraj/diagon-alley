@@ -25,7 +25,7 @@ class Product(models.Model):
         return self.price * self.discount_percentage
 
     class Meta:
-        db_table = 'products'
+        db_table = 'product'
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         ordering = ('name',)
@@ -50,7 +50,7 @@ class Unit(models.Model):
         return str(self.value) + " " + str(self.unit)
 
     class Meta:
-        db_table = 'units'
+        db_table = 'unit'
         verbose_name = 'Unit'
         verbose_name_plural = 'Units'
         ordering = ('value',)
@@ -69,7 +69,7 @@ class UnitImage(models.Model):
         return str(self.unit)
 
     class Meta:
-        db_table = 'unit_images'
+        db_table = 'unit_image'
         verbose_name = 'Unit Image'
         verbose_name_plural = 'Unit Images'
         ordering = ('unit',)
