@@ -6,6 +6,8 @@ from django.dispatch import receiver
 
 from category import models as category_models
 from product import models as product_models
+from user import models as user_models
+from address import models as address_models
 
 
 class OrderUserAddress(models.Model):
@@ -30,7 +32,8 @@ class OrderUserAddress(models.Model):
 
 
 class OrderUser(models.Model):
-    user_id = models.IntegerField()
+    user = models.ForeignKey(
+        user_models.User, on_delete=models.SET_NULL, null=True)
 
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
