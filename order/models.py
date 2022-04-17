@@ -11,6 +11,14 @@ from address import models as address_models
 
 
 class OrderUserAddress(models.Model):
+    address_fk = models.ForeignKey(
+        address_models.Address,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('Address'),
+        related_name='order_user_address'
+    )
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
