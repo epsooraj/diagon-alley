@@ -87,7 +87,7 @@ def order_post_save_receiver(sender, instance, **kwargs):
 class OrderProduct(models.Model):
     order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name="products")
-    quantity = models.IntegerField(verbose_name="Quantity")
+    quantity = models.IntegerField(verbose_name="Quantity", default=1)
 
     product = models.ForeignKey(
         product_models.Product, on_delete=models.SET_NULL, related_name="order_products", null=True)
@@ -113,7 +113,7 @@ class OrderProduct(models.Model):
         verbose_name_plural = 'Order Products'
 
 
-class OrderUnit(models.Model):
+class OrderProductUnit(models.Model):
     product = models.ForeignKey(
         to=OrderProduct, on_delete=models.CASCADE, related_name="units")
 
@@ -133,15 +133,15 @@ class OrderUnit(models.Model):
         return str(self.value) + " " + str(self.unit)
 
     class Meta:
-        db_table = 'order_unit'
+        db_table = 'order_product_unit'
         verbose_name = 'Unit'
         verbose_name_plural = 'Units'
         ordering = ('value',)
 
 
-class OrderUnitImage(models.Model):
+class OrderProductUnitImage(models.Model):
     unit = models.ForeignKey(
-        to=OrderUnit, on_delete=models.CASCADE, related_name="unit_images")
+        to=OrderProductUnit, on_delete=models.CASCADE, related_name="unit_images")
 
     image = models.ImageField(upload_to='product/unit_images/')
 
@@ -152,7 +152,7 @@ class OrderUnitImage(models.Model):
         return str(self.unit)
 
     class Meta:
-        db_table = 'order_unit_image'
+        db_table = 'order_product_unit_image'
         verbose_name = 'Unit Image'
         verbose_name_plural = 'Unit Images'
         ordering = ('unit',)
