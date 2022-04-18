@@ -3,6 +3,8 @@ venv=venv/bin/python
 runserver:
 	 $(venv) manage.py runserver
 
+r: runserver
+
 makemigrations:
 	 $(venv) manage.py makemigrations
 
