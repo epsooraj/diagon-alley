@@ -27,6 +27,10 @@ class OrderSerializer(serializers.ModelSerializer):
     products = OrderProductSerializer(many=True, read_only=True)
     user = OrderUserSerializer(read_only=True)
 
+    def __init__(self, *args, **kwargs):
+        kwargs['partial'] = True
+        super(OrderSerializer, self).__init__(*args, **kwargs)
+
     class Meta:
         model = models.Order
         fields = '__all__'
