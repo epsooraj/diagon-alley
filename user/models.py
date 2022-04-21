@@ -24,4 +24,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return f'{str(self.first_name)} {str(self.last_name)}, {str(self.email)}'
