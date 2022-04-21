@@ -53,7 +53,7 @@ class OrderUser(models.Model):
         to=OrderUserAddress, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.email
+        return f'{str(self.first_name)} {str(self.last_name)}, {str(self.email)}'
 
     class Meta:
         db_table = 'order_user'

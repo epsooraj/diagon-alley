@@ -87,7 +87,8 @@ class OrderViewSet(viewsets.ModelViewSet):
                 product=order_product_obj,
                 product_unit=cart_obj.unit,
 
-                quantity=cart_obj.quantity,
+                unit=cart_obj.unit.unit,
+                value=cart_obj.unit.value,
 
                 price=cart_obj.unit.price,
                 discount_percentage=cart_obj.unit.discount_percentage,
@@ -104,4 +105,12 @@ class OrderViewSet(viewsets.ModelViewSet):
 
             order_obj.total_product_price += discounted_price * cart_obj.quantity
 
+        # Calculate total price
+        order_obj.total_price = order_obj.total_product_price
+
         order_obj.save()
+
+        # Clear Cart
+        cart_objs.delete()
+
+        return Response(serializers.OrderSerializer(order_obj).data, status=201)
