@@ -23,4 +23,4 @@ class Cart(models.Model):
         verbose_name_plural = 'Carts'
 
     def __str__(self):
-        return str(self.user)
+        return f"{str(self.user)} {str(self.product)}-{str(self.unit)}, Qty ->{str(self.quantity)}"
