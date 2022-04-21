@@ -42,5 +42,5 @@ Product app has a database table named 'products' with the following columns:
 - [x] Category
 - [x] Product
 - [x] Cart
-- [ ] Order
+- [x] Order
 - [ ] Report
