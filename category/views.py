@@ -9,7 +9,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows categories to be viewed or edited.
     """
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = category_serializers.CategorySerializer
 
     def get_queryset(self):
