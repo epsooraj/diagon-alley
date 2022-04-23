@@ -10,8 +10,7 @@ from category import models as category_models
 
 class ProductViewSet(viewsets.ModelViewSet):
 
-    permission_classes = [permissions.AllowAny]
-
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = product_models.Product.objects.all()
     serializer_class = product_serializers.ProductSerializer
 
