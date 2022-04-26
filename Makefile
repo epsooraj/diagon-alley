@@ -19,3 +19,10 @@ shell:
 	 $(venv) manage.py shell_plus
 
 s: shell
+
+dbr:
+	docker-compose stop
+	docker-compose up --build
+drr:
+	docker-compose stop
+	docker-compose up
